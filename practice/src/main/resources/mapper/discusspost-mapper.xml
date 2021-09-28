@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowcoder.practice.practice.Dao.DiscussPostMapper">
+    <sql id="selectFields">
+        id,user_id,title,content,type,status,create_time,comment_count,score
+    </sql>
+    <sql id="insertFields">
+        user_id,title,content,type,status,create_time,comment_count,score
+    </sql>
+    <select id="selectDiscussPosts" resultType="DiscussPost">
+        select <include refid="selectFields"></include>
+        from discuss_post
+        where status != 2     <!--  status是2的时候表示拉黑，不查出来-->
+        <if test ="userId !=0">
+            and user_id = #{userId}
+        </if>
+        <if test="orderMode == 0">
+            order by type desc,create_time desc  <!--按照类型和创建时间倒序排序（倒序代表置顶放在最上面，同样是置顶的话就是最新的放在最上面）-->
+        </if>
+        <if test="orderMode == 1">
+            order by type desc,score desc,create_time desc
+            <!--    orderMode如果是0,代表帖子按最新排序，那么主要是按照时间排序，如果是1，代表按最热排序，那就是按分数排序-->
+        </if>
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="selectDiscussPostRows" resultType="int">
+        select count(id)
+        from discuss_post
+        where status != 2
+        <if test ="userId !=0">
+            and user_id = #{userId}
+        </if>
+    </select>
+    <insert id="insertDiscussPosts" parameterType="DiscussPost" keyProperty="id">
+        insert into discuss_post(<include refid="insertFields"></include>)
+        values(#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
+    </insert>
+    <delete id="deletDiscussPosts">
+        delete
+        from discuss_post
+        where user_id = #{userId}
+
+    </delete>
+    <select id="selectDiscussPost" resultType="DiscussPost">
+        select <include refid="selectFields"></include>
+        from discuss_post
+        where id = #{id}
+    </select>
+    <update id="updateCommentCount">
+        update discuss_post
+        set comment_count = #{commentCounts}
+        where id = #{id}
+    </update>
+    <update id="updatePostType">
+        update discuss_post
+        set type = #{type}
+        where id = #{id}
+    </update>
+    <update id="updatePostStatus">
+        update discuss_post
+        set status = #{status}
+        where id = #{id}
+    </update>
+    <update id="updatePostScore">
+        update discuss_post
+        set score = #{score}
+        where id = #{postId}
+    </update>
+
+</mapper>
