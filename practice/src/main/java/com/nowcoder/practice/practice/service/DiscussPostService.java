@@ -1,6 +1,6 @@
-package com.nowcoder.practice.practice.Service;
+package com.nowcoder.practice.practice.service;
 
-import com.nowcoder.practice.practice.Dao.DiscussPostMapper;
+import com.nowcoder.practice.practice.dao.DiscussPostMapper;
 import com.nowcoder.practice.practice.entity.DiscussPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

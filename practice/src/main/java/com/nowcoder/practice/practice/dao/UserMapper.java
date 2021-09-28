@@ -1,8 +1,7 @@
-package com.nowcoder.practice.practice.Dao;
+package com.nowcoder.practice.practice.dao;
 
 import com.nowcoder.practice.practice.entity.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 @Mapper
 public interface UserMapper {

@@ -1,8 +1,7 @@
 package com.nowcoder.practice.practice;
 
-import com.nowcoder.practice.practice.Dao.DiscussPostMapper;
-import com.nowcoder.practice.practice.Dao.UserMapper;
-import com.nowcoder.practice.practice.Service.UserService;
+import com.nowcoder.practice.practice.dao.DiscussPostMapper;
+import com.nowcoder.practice.practice.dao.UserMapper;
 import com.nowcoder.practice.practice.util.MailClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.nowcoder.practice.practice.Controller;
+package com.nowcoder.practice.practice.controller;
 
-import com.nowcoder.practice.practice.Service.DiscussPostService;
-import com.nowcoder.practice.practice.Service.UserService;
+import com.nowcoder.practice.practice.service.DiscussPostService;
+import com.nowcoder.practice.practice.service.UserService;
 import com.nowcoder.practice.practice.entity.DiscussPost;
 import com.nowcoder.practice.practice.entity.Page;
 import com.nowcoder.practice.practice.entity.User;

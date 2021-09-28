@@ -1,10 +1,8 @@
-package com.nowcoder.practice.practice.Dao;
+package com.nowcoder.practice.practice.dao;
 
 import com.nowcoder.practice.practice.entity.DiscussPost;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package com.nowcoder.practice.practice.Service;
+package com.nowcoder.practice.practice.service;
 
 import com.mysql.cj.util.StringUtils;
-import com.nowcoder.practice.practice.Dao.UserMapper;
+import com.nowcoder.practice.practice.dao.UserMapper;
 import com.nowcoder.practice.practice.entity.User;
 import com.nowcoder.practice.practice.util.CommunityConstant;
 import com.nowcoder.practice.practice.util.CommunityUtil;
@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.locks.Condition;
 
 @Service
 public class UserService implements CommunityConstant {
