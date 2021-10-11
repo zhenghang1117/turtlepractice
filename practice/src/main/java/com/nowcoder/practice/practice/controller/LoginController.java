@@ -4,14 +4,18 @@ import com.google.code.kaptcha.Producer;
 import com.nowcoder.practice.practice.service.UserService;
 import com.nowcoder.practice.practice.entity.User;
 import com.nowcoder.practice.practice.util.CommunityConstant;
+import com.nowcoder.practice.practice.util.CommunityUtil;
+import org.apache.ibatis.annotations.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
@@ -26,6 +30,8 @@ public class LoginController implements CommunityConstant {
     UserService userService;
     @Autowired
     Producer kaptchaProducer;
+    @Value("${server.servlet.context-path}")
+    private  String context;
     @RequestMapping(path = "/testLogin",method = RequestMethod.GET)
     @ResponseBody
     public String test(){
@@ -76,6 +82,62 @@ public class LoginController implements CommunityConstant {
         } catch (IOException e) {
             logger.error("响应验证码失败"+e.getMessage());
         }
-
+    }
+    @RequestMapping(path = "/login",method = RequestMethod.GET)
+    public String getLogin(){
+        return "/site/login";
+    }
+    @RequestMapping(path = "/login",method = RequestMethod.POST)
+    public String login(Model model,String username,String password,String code,HttpSession session,boolean rememberme,HttpServletResponse response){
+        String kaptcha = session.getAttribute("kaptcha").toString();
+        if(!code.equalsIgnoreCase(kaptcha)){
+            model.addAttribute("codeMsg","验证码输入错误!");
+            return "/site/login";
+        }
+        int expiredSeconds = rememberme ==true ? REMEMBER_EXPIRED_SECONDS : DEFAULT_EXPIRED_SECONDS;
+        Map<String,Object> map = userService.login(username,password,expiredSeconds);
+        if(map.containsKey("ticket")){
+            Cookie cookie = new Cookie("ticket",map.get("ticket").toString());
+            cookie.setPath(context);
+            cookie.setMaxAge(expiredSeconds);
+            response.addCookie(cookie);
+            return "redirect:/index";
+        }
+        model.addAttribute("usernameMsg",map.get("usernameMsg"));
+        model.addAttribute("passwordMsg",map.get("passwordMsg"));
+        //如果登陆失败，就重新返回登陆界面
+        return "/site/login";
+    }
+    @RequestMapping(path = "/logout",method = RequestMethod.GET)
+    public String logout(@CookieValue("ticket") String ticket){
+        userService.logout(ticket);
+        return "redirect:/index";
+    }
+    @RequestMapping(path = "/forget",method = RequestMethod.GET)
+    public String getForgetPage(){
+        return "/site/forget";
+    }
+    @RequestMapping(path = "/forget/password",method = RequestMethod.POST)
+    public String forget(String email,String code,String newpassword,HttpSession session,Model model){
+        boolean judgeCode = session.getAttribute("kaptcha") == null || !session.getAttribute("kaptcha").toString().equals(code);
+        if(judgeCode){
+            model.addAttribute("codeMsg","验证码输入错误!");
+            return "/site/forget";
+        }
+        User user = userService.findUserByEmail(email);
+        userService.updatePassword(user,newpassword);
+        return "redirect:/login";
+    }
+    @RequestMapping(path = "/forget/code",method = RequestMethod.GET)
+    @ResponseBody
+    public String getForgetKaptcha(String email,HttpSession session){
+        User user = userService.findUserByEmail(email);
+        if(user == null){
+            return CommunityUtil.getJsonString(1,"该邮箱不存在!");
+        }
+        String text = CommunityUtil.generateUUID().substring(0,4);
+        session.setAttribute("kaptcha",text);
+        userService.forgetPassword(email,text);
+        return CommunityUtil.getJsonString(0);
     }
 }

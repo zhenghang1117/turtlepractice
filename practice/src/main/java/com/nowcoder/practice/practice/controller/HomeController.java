@@ -22,7 +22,7 @@ public class HomeController {
     DiscussPostService discussPostService;
     @Autowired
     UserService userService;
-    @RequestMapping("/index")
+    @RequestMapping({"/index","/"})
     public String getIndexPage(Model model, Page page, @RequestParam(name = "orderMode",defaultValue = "0") int orderMode){
         page.setRows(discussPostService.findDiscussPostsRows(0));
         page.setPath("/index?orderMode="+orderMode);

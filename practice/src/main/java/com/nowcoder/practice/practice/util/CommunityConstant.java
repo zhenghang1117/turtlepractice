@@ -67,4 +67,5 @@ public interface CommunityConstant {
      * 权限：版主
      * */
     String AUTHORITY_MODERATOR = "moderator";
+
 }
