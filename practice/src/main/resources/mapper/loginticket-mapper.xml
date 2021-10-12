@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowcoder.practice.practice.dao.LoginTicketMapper">
+    <sql id="commonFields">
+        id,user_id,ticket,status,expired
+    </sql>
+    <select id="selectByTicket" resultType="LoginTicket">
+        select <include refid="commonFields"></include>
+        from login_ticket
+        where ticket = #{ticket}
+    </select>
+    <update id="updateTicket">
+        update login_ticket
+        set status = #{status}
+        where ticket = #{ticket}
+    </update>
+    <insert id="insertTicket" parameterType="LoginTicket" keyProperty="id">
+        insert into login_ticket (<include refid="commonFields"></include>)
+        values(#{id},#{userid},#{ticket},#{status},#{expired})
+    </insert>
+    <delete id="deleteTicket">
+        delete
+        from login_ticket
+        where ticket = #{ticket}
+    </delete>
+</mapper>
