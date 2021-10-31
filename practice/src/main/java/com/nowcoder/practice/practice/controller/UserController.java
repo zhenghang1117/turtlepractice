@@ -1,5 +1,6 @@
 package com.nowcoder.practice.practice.controller;
 
+import com.nowcoder.practice.practice.controller.annotation.LoginRequired;
 import com.nowcoder.practice.practice.entity.User;
 import com.nowcoder.practice.practice.service.UserService;
 import com.nowcoder.practice.practice.util.CommunityConstant;
@@ -35,6 +36,7 @@ public class UserController implements CommunityConstant {
     @Autowired
     HostHolder hostHolder;
     @RequestMapping(path = "/setting",method = RequestMethod.GET)
+    @LoginRequired
     public String getSetting(){
         return "/site/setting";
     }

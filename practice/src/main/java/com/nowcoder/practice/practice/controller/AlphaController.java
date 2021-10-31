@@ -1,12 +1,21 @@
 package com.nowcoder.practice.practice.controller;
 
+import com.nowcoder.practice.practice.service.AlphaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(path = "/alpha")
 public class AlphaController {
+    @Autowired
+    AlphaService alphaService;
+    private  static final Logger logger = LoggerFactory.getLogger(AlphaController.class);
    @RequestMapping(path = "/hello",method = RequestMethod.GET)
    @ResponseBody
     public String sayHello(){
@@ -33,4 +42,13 @@ public class AlphaController {
     public String testCookie(@CookieValue("ticket") String ticket){
        return ticket;
     }
+
+    @RequestMapping(path = "/test/transaction")
+    @ResponseBody
+    public String test(){
+        alphaService.testTransction(11);
+        return "事务执行完了";
+    }
+
+
 }

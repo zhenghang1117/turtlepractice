@@ -37,6 +37,7 @@ public class UserService implements CommunityConstant {
     public User findUserById(int id){
         return userMapper.selectById(id);
     }
+    public User findUserByName(String username){return userMapper.selectByName(username);}
     public Map<String,Object> register(User user){
         Map<String,Object> map = new HashMap<>();
         if(user == null){
@@ -73,16 +74,6 @@ public class UserService implements CommunityConstant {
         user.setHeaderUrl(String.format("http://images.nowcoder.com/head/%dt.png",new Random().nextInt(1000)));//生成一个随机头像
         user.setCreateTime(new Date());
         userMapper.insertUser(user);
-
-        //激活邮件
-//        Context context = new Context();
-//        context.setVariable("email",user.getEmail());
-//        String url = domain + contextPath +"/activation/"+user.getId()+"/"+user.getActivationCode();
-//        context.setVariable("url",url);
-//        String content = templateEngine.process("/mail/activation",context);
-//        mailClient.sendMail(user.getEmail(),"激活账号",content);
-
-
         Context context = new Context();
         context.setVariable("email",user.getEmail());
         //动态生成一个Url，也就是用户点击链接之后蹦到哪个网页去激活

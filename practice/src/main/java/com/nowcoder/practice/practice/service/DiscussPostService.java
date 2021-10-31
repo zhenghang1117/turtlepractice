@@ -25,10 +25,24 @@ public class DiscussPostService {
         if(discussPost == null){
             throw new IllegalArgumentException(("参数不能为空!"));
         }
-//        discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));
-//        discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
+        discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));
+        discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
         discussPost.setTitle(sensitiveFilter.filter(discussPost.getTitle()));
         discussPost.setContent(sensitiveFilter.filter(discussPost.getContent()));
         return discussPostMapper.insertDiscussPosts(discussPost);
+    }
+    public DiscussPost selectDiscussPost(int discussPostId){
+        return discussPostMapper.selectDiscussPost(discussPostId);
+    }  public int updateCommentCount(int id,int commentCounts){
+        return discussPostMapper.updateCommentCount(id,commentCounts);
+    }
+    public int updatePostType(int id,int type){
+        return discussPostMapper.updatePostType(id,type);
+    }
+    public int updatePostStatus(int id,int status){
+        return discussPostMapper.updatePostStatus(id,status);
+    }
+    public int updatePostScore(int id,double score){
+        return discussPostMapper.updatePostScore(id,score);
     }
 }
