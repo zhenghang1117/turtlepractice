@@ -20,5 +20,11 @@ public class AlphaService {
             e.printStackTrace();
         }
         return user;
-}
+    }
+    public void testGit(){
+        System.out.println("测试分支");
+    }
+    public void testGit2(){
+        System.out.println("再次测试分支");
+    }
 }

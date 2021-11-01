@@ -43,12 +43,6 @@ public class AlphaController {
        return ticket;
     }
 
-    @RequestMapping(path = "/test/transaction")
-    @ResponseBody
-    public String test(){
-        alphaService.testTransction(11);
-        return "事务执行完了";
-    }
 
 
 }
